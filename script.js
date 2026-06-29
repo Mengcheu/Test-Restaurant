@@ -5,7 +5,7 @@ const foodData = [
         name: "Margherita Pizza",
         price: 12.99,
         category: "pizza",
-        image: "img/food/burger.jpg",
+        image: "img/food/pizza.jpg",
         description: "Classic pizza with tomato sauce, mozzarella, and basil"
     },
     {
@@ -13,7 +13,7 @@ const foodData = [
         name: "Pepperoni Pizza",
         price: 14.99,
         category: "pizza",
-        image: "img/category/burger.jpg",
+        image: "img/food/pizza2.jpg",
         description: "Pizza topped with pepperoni and mozzarella cheese"
     },
     {
@@ -21,7 +21,7 @@ const foodData = [
         name: "Cheeseburger",
         price: 9.99,
         category: "burger",
-        image: "img/food/burger.jpg",
+        image: "img/food/burger3.jpg",
         description: "Juicy beef burger with cheese, lettuce, and tomato"
     },
     {
@@ -29,7 +29,7 @@ const foodData = [
         name: "Chicken Burger",
         price: 10.99,
         category: "burger",
-        image: "img/category/burger.jpg",
+        image: "img/food/burger3.jpg",
         description: "Grilled chicken breast with special sauce"
     },
     {
@@ -37,7 +37,7 @@ const foodData = [
         name: "Club Sandwich",
         price: 8.99,
         category: "sandwich",
-        image: "img/food/burger.jpg",
+        image: "img/food/sandwich1.jpg",
         description: "Triple-decker sandwich with turkey, bacon, and vegetables"
     },
     {
@@ -45,28 +45,13 @@ const foodData = [
         name: "Veggie Sandwich",
         price: 7.99,
         category: "sandwich",
-        image: "img/category/burger.jpg",
+        image: "img/food/sandwich2.jpg",
         description: "Fresh vegetables with hummus and sprouts"
     },
-    {
-        id: 7,
-        name: "Veggie Sandwich",
-        price: 7.99,
-        category: "sandwich",
-        image: "img/category/burger.jpg",
-        description: "Fresh vegetables with hummus and sprouts"
-    },
-    {
-    id: 8,
-        name: "Veggie Sandwich",
-        price: 7.99,
-        category: "sandwich",
-        image: "img/category/burger.jpg",
-        description: "Fresh vegetables with hummus and sprouts"
-    }
+   
 ];
 
-// Cart array
+
 let cart = [];
 
 // DOM Elements
@@ -79,13 +64,13 @@ const cartCount = document.querySelector('.cart-count');
 const featuredFoods = document.getElementById('featuredFoods');
 const checkoutBtn = document.getElementById('checkoutBtn');
 
-// Initialize the app
+
 document.addEventListener('DOMContentLoaded', function() {
     loadCartFromLocalStorage();
     displayFeaturedFoods();
     updateCartUI();
     
-    // Event Listeners
+
     if (cartLink) {
         cartLink.addEventListener('click', function(e) {
             e.preventDefault();
@@ -95,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     closeCart.addEventListener('click', closeCartModal);
     checkoutBtn.addEventListener('click', checkout);
     
-    // Close modal when clicking outside
+    
     window.addEventListener('click', function(event) {
         if (event.target === cartModal) {
             closeCartModal();
@@ -103,11 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Display featured foods
+
 function displayFeaturedFoods() {
     featuredFoods.innerHTML = '';
     
-    // Get first 3 items as featured
+  
     const featuredItems = foodData.slice(0, 3);
     
     featuredItems.forEach(food => {
@@ -125,7 +110,7 @@ function displayFeaturedFoods() {
         featuredFoods.appendChild(foodCard);
     });
     
-    // Add event listeners to add to cart buttons
+   
     document.querySelectorAll('.add-to-cart').forEach(button => {
         button.addEventListener('click', function() {
             const foodId = parseInt(this.getAttribute('data-id'));
@@ -134,12 +119,12 @@ function displayFeaturedFoods() {
     });
 }
 
-// Add item to cart
+
 function addToCart(foodId) {
     const food = foodData.find(item => item.id === foodId);
     
     if (food) {
-        // Check if item already in cart
+       
         const existingItem = cart.find(item => item.id === foodId);
         
         if (existingItem) {
@@ -157,19 +142,19 @@ function addToCart(foodId) {
         saveCartToLocalStorage();
         updateCartUI();
         
-        // Show confirmation
+       
         alert(`${food.name} added to cart!`);
     }
 }
 
-// Remove item from cart
+
 function removeFromCart(foodId) {
     cart = cart.filter(item => item.id !== foodId);
     saveCartToLocalStorage();
     updateCartUI();
 }
 
-// Update item quantity
+
 function updateQuantity(foodId, change) {
     const item = cart.find(item => item.id === foodId);
     
@@ -185,13 +170,13 @@ function updateQuantity(foodId, change) {
     }
 }
 
-// Update cart UI
+
 function updateCartUI() {
     // Update cart count
     const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
     cartCount.textContent = totalItems;
     
-    // Update cart modal
+   
     if (cart.length === 0) {
         cartItems.innerHTML = '<p class="empty-cart-message">Your cart is empty</p>';
         cartTotal.textContent = '0.00';
@@ -226,7 +211,7 @@ function updateCartUI() {
     
     cartTotal.textContent = total.toFixed(2);
     
-    // Add event listeners to cart buttons
+   
     document.querySelectorAll('.quantity-btn.minus').forEach(button => {
         button.addEventListener('click', function() {
             const foodId = parseInt(this.getAttribute('data-id'));
@@ -249,36 +234,36 @@ function updateCartUI() {
     });
 }
 
-// Open cart modal
+
 function openCart() {
     cartModal.style.display = 'flex';
 }
 
-// Close cart modal
+
 function closeCartModal() {
     cartModal.style.display = 'none';
 }
 
-// Checkout function
+
 function checkout() {
     if (cart.length === 0) {
         alert('Your cart is empty!');
         return;
     }
     
-    // Save order to localStorage
+   
     const order = {
         items: [...cart],
         total: parseFloat(cartTotal.textContent),
         timestamp: new Date().toISOString()
     };
     
-    // Get existing orders or initialize empty array
+    
     const orders = JSON.parse(localStorage.getItem('orders')) || [];
     orders.push(order);
     localStorage.setItem('orders', JSON.stringify(orders));
     
-    // Generate bill preview
+    
     generateBillPreview(order);
     
     // Clear cart
@@ -288,9 +273,9 @@ function checkout() {
     closeCartModal();
 }
 
-// Generate bill preview
+
 function generateBillPreview(order) {
-    // Create bill content
+   
     let billContent = `
 =====================================
           FOODIE DELIGHT
@@ -320,13 +305,12 @@ Total Amount: $${order.total.toFixed(2)}
 =====================================
 `;
     
-    // Show bill preview modal
+   
     showBillPreview(billContent, order);
 }
 
-// Show bill preview modal
 function showBillPreview(billContent, order) {
-    // Create modal if it doesn't exist
+   
     let billModal = document.getElementById('billModal');
     if (!billModal) {
         billModal = document.createElement('div');
@@ -352,7 +336,7 @@ function showBillPreview(billContent, order) {
         `;
         document.body.appendChild(billModal);
         
-        // Add event listeners
+       
         document.getElementById('closeBill').addEventListener('click', () => {
             billModal.style.display = 'none';
         });
@@ -369,7 +353,7 @@ function showBillPreview(billContent, order) {
             downloadBillAsPdf(billContent, order);
         });
         
-        // Close modal when clicking outside
+        
         window.addEventListener('click', function(event) {
             if (event.target === billModal) {
                 billModal.style.display = 'none';
@@ -377,14 +361,14 @@ function showBillPreview(billContent, order) {
         });
     }
     
-    // Update bill content
+    
     document.getElementById('billPreview').textContent = billContent;
     
-    // Show modal
+   
     billModal.style.display = 'flex';
 }
 
-// Download bill as TXT
+
 function downloadBillAsTxt(billContent, order) {
     const blob = new Blob([billContent], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -397,10 +381,9 @@ function downloadBillAsTxt(billContent, order) {
     URL.revokeObjectURL(url);
 }
 
-// Download bill as PDF
+
 function downloadBillAsPdf(billContent, order) {
-    // For simplicity, we'll create a print-friendly version and trigger print
-    // In a real application, you might use a library like jsPDF
+    
     
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
@@ -425,12 +408,12 @@ function downloadBillAsPdf(billContent, order) {
     printWindow.document.close();
 }
 
-// Save cart to localStorage
+
 function saveCartToLocalStorage() {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-// Load cart from localStorage
+
 function loadCartFromLocalStorage() {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -438,7 +421,7 @@ function loadCartFromLocalStorage() {
     }
 }
 
-// Menu page functions
+
 function displayMenuFoods(category = 'all') {
     const menuFoods = document.getElementById('menuFoods');
     if (!menuFoods) return;
@@ -464,7 +447,7 @@ function displayMenuFoods(category = 'all') {
         menuFoods.appendChild(foodCard);
     });
     
-    // Add event listeners to add to cart buttons
+  
     document.querySelectorAll('.add-to-cart').forEach(button => {
         button.addEventListener('click', function() {
             const foodId = parseInt(this.getAttribute('data-id'));
@@ -473,25 +456,25 @@ function displayMenuFoods(category = 'all') {
     });
 }
 
-// Filter functionality for menu page
+
 function setupFilterButtons() {
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Remove active class from all buttons
+         
             filterButtons.forEach(btn => btn.classList.remove('active'));
             
-            // Add active class to clicked button
+            
             this.classList.add('active');
             
-            // Get category and display foods
+         
             const category = this.getAttribute('data-category');
             displayMenuFoods(category);
         });
     });
 }
 
-// Initialize menu page if on menu page
+
 if (document.querySelector('.menu-page')) {
     document.addEventListener('DOMContentLoaded', function() {
         loadCartFromLocalStorage();
@@ -499,7 +482,7 @@ if (document.querySelector('.menu-page')) {
         displayMenuFoods();
         setupFilterButtons();
         
-        // Event Listeners
+      
         const cartLink = document.getElementById('cartLink');
         if (cartLink) {
             cartLink.addEventListener('click', function(e) {
@@ -509,7 +492,7 @@ if (document.querySelector('.menu-page')) {
         }
         closeCart.addEventListener('click', closeCartModal);
         
-        // Close modal when clicking outside
+        
         window.addEventListener('click', function(event) {
             if (event.target === cartModal) {
                 closeCartModal();
@@ -518,13 +501,13 @@ if (document.querySelector('.menu-page')) {
     });
 }
 
-// Initialize about page if on about page
+
 if (document.querySelector('.about-page')) {
     document.addEventListener('DOMContentLoaded', function() {
         loadCartFromLocalStorage();
         updateCartUI();
         
-        // Event Listeners
+       
         const cartLink = document.getElementById('cartLink');
         if (cartLink) {
             cartLink.addEventListener('click', function(e) {
@@ -534,7 +517,7 @@ if (document.querySelector('.about-page')) {
         }
         closeCart.addEventListener('click', closeCartModal);
         
-        // Close modal when clicking outside
+       
         window.addEventListener('click', function(event) {
             if (event.target === cartModal) {
                 closeCartModal();
@@ -543,13 +526,13 @@ if (document.querySelector('.about-page')) {
     });
 }
 
-// Initialize contact page if on contact page
+
 if (document.querySelector('.contact-page')) {
     document.addEventListener('DOMContentLoaded', function() {
         loadCartFromLocalStorage();
         updateCartUI();
         
-        // Event Listeners
+      
         const cartLink = document.getElementById('cartLink');
         if (cartLink) {
             cartLink.addEventListener('click', function(e) {
@@ -559,25 +542,25 @@ if (document.querySelector('.contact-page')) {
         }
         closeCart.addEventListener('click', closeCartModal);
         
-        // Close modal when clicking outside
+      
         window.addEventListener('click', function(event) {
             if (event.target === cartModal) {
                 closeCartModal();
             }
         });
         
-        // Form submission
+   
         const contactForm = document.getElementById('contactForm');
         if (contactForm) {
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                // Get form data
+           
                 const name = document.getElementById('name').value;
                 const email = document.getElementById('email').value;
                 const message = document.getElementById('message').value;
                 
-                // Create contact message object
+               
                 const contactMessage = {
                     name: name,
                     email: email,
@@ -585,16 +568,7 @@ if (document.querySelector('.contact-page')) {
                     timestamp: new Date().toISOString()
                 };
                 
-                // Save to localStorage
-                const messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
-                messages.push(contactMessage);
-                localStorage.setItem('contactMessages', JSON.stringify(messages));
                 
-                // Reset form
-                contactForm.reset();
-                
-                // Show confirmation
-                alert('Thank you for your message! We will get back to you soon.');
             });
         }
     });
