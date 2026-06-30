@@ -1,4 +1,4 @@
-// Food data
+
 const foodData = [
     {
         id: 1,
@@ -54,7 +54,7 @@ const foodData = [
 
 let cart = [];
 
-// DOM Elements
+
 const cartLink = document.getElementById('cartLink');
 const cartModal = document.getElementById('cartModal');
 const closeCart = document.getElementById('closeCart');
@@ -172,7 +172,7 @@ function updateQuantity(foodId, change) {
 
 
 function updateCartUI() {
-    // Update cart count
+    
     const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
     cartCount.textContent = totalItems;
     
@@ -266,7 +266,7 @@ function checkout() {
     
     generateBillPreview(order);
     
-    // Clear cart
+    
     cart = [];
     saveCartToLocalStorage();
     updateCartUI();
